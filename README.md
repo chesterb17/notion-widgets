@@ -1,6 +1,6 @@
 # notion-widgets
 
-Collection of widgets for Notion.
+Collection of custom-made widgets for Notion.
 
 ## Instructions
 
@@ -12,6 +12,10 @@ then navigate to the desired widget.
 
 ## Widgets
 
+Currently, there is a flip-clock and mini calendar widget available.
+
 ### Clock
+
+Changes to widget can be made by editing the source code. 
 
 ### Calendar
