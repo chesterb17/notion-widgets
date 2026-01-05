@@ -1,14 +1,14 @@
-# notion-widgets
+# Notion Widgets
 
 Collection of custom-made widgets for Notion.
 
 ## Instructions
 
-To preview, please paste the follwoing into the terminal:
+To preview widget, please paste the following into the terminal:
 
 python3 -m http.server 8000
 
-then navigate to the desired widget.
+and follow to the forwarded port. This should open a webpage where you can then navigate to the desired widget. You can also access the webpage through the *PORTS* tab once the command has been run in the terminal.
 
 ## Widgets
 
@@ -16,6 +16,21 @@ Currently, there is a flip-clock and mini calendar widget available.
 
 ### Clock
 
-Changes to widget can be made by editing the source code. 
+Any changes to the widget layout and style can be made by editing the source code located in the file **clock/index.html**. To make color changes, navigate to the line listed below and change the color as desired.
+
+**Background Color:** line 31
+
+**Text Color:** line 37
 
 ### Calendar
+
+Any changes to the widget can be made by editing the source code located in the file **calendar/index.html**. To make color changes, navigate to the line listed below and change the color as desired.
+
+**Background Color:** line 27
+
+**Text Color:** line 21
+
+**Divider Color:** line 86
+
+
+To change background color, change rgb color in line 27. To change text color, change rgb color in line 21. To change grid/divider color, change rgb color in line 110 and 86 respectivly. To change 
