@@ -23,35 +23,57 @@
 
     .calendar {
       width: 250px;
-      height: 250px;  /* fixed square size */
-      background: #2f3437;
+      height: 250px;
+      background: #A8AAD2;
       border-radius: 22px;
       padding: 16px;
       box-sizing: border-box;
-
       display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      flex-direction: column;
     }
 
-    /* Content wrapper for header + divider + grid */
     .content {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      width: 100%;
       height: 100%;
+      width: 100%;
     }
 
     .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    .arrow {
+      font-size: 16px;
+      opacity: 0.7;
+      cursor: pointer;
+      user-select: none;
+      transition: opacity 0.2s;
+      font-weight: 200;
+      width: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arrow:hover {
+      opacity: 1;
+    }
+
+    .month-year-container {
       text-align: center;
-      margin-bottom: 6px;
-      flex-shrink: 0; /* don't let header shrink */
+      flex: 1;
     }
 
     .month {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
+      line-height: 1.2;
     }
 
     .year {
@@ -59,51 +81,48 @@
       opacity: 0.7;
     }
 
-    /* Divider sits directly above grid */
     .divider {
       height: 0.75px;
       background: rgba(255, 255, 255, 0.1);
       width: 100%;
-      margin-bottom: 6px;
+      margin: 4px 0;
       flex-shrink: 0;
     }
 
-    /* Days grid (weekdays + days of month) */
     .days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      grid-template-rows: repeat(7, 1fr); /* 1 row weekdays + 6 rows days */
-      gap: 4px;
+      grid-template-rows: repeat(7, 1fr);
+      gap: 2px;
       width: 100%;
-
-      /* calculate height to fit remaining space */
-      height: calc(100% - 40px); /* 40px ≈ header + divider + margins */
+      height: calc(100% - 55px);
+      flex: 1;
+      min-height: 0;
     }
 
-    /* Day cells */
     .days div {
       display: flex;
       align-items: center;
       justify-content: center;
-      aspect-ratio: 1 / 1;   /* ensures perfect squares */
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 400;
-      border-radius: 6px;
+      border-radius: 4px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-sizing: border-box;
+      min-height: 0;
     }
 
-    /* Weekday cells */
     .weekday {
       font-weight: 600;
       background: transparent;
       border: none !important;
+      font-size: 12px;
+      opacity: 0.7;
     }
 
-    /* Highlight today */
     .today {
       background: #ffffff;
-      color: #2f3437;
+      color: #A8AAD2;
       font-weight: 600;
       border: 1px solid #ffffff;
     }
@@ -114,21 +133,28 @@
   <div class="calendar">
     <div class="content">
       <div class="header">
-        <div class="month" id="month"></div>
-        <div class="year" id="year"></div>
+        <div class="arrow" id="prev-month">‹</div>
+        <div class="month-year-container">
+          <div class="month" id="month"></div>
+          <div class="year" id="year"></div>
+        </div>
+        <div class="arrow" id="next-month">›</div>
       </div>
 
-      <div class="divider"></div> <!-- divider sits directly above grid -->
+      <div class="divider"></div>
 
       <div class="days" id="days"></div>
     </div>
   </div>
 
   <script>
-    const now = new Date();
+    let currentDate = new Date();
+    
     const monthEl = document.getElementById("month");
     const yearEl = document.getElementById("year");
     const daysEl = document.getElementById("days");
+    const prevMonthBtn = document.getElementById("prev-month");
+    const nextMonthBtn = document.getElementById("next-month");
 
     const monthNames = [
       "January","February","March","April","May","June",
@@ -137,37 +163,54 @@
 
     const weekdays = ["S","M","T","W","T","F","S"];
 
-    const year = now.getFullYear();
-    const month = now.getMonth();
-    const today = now.getDate();
+    function updateCalendar(date) {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const today = new Date();
+      
+      monthEl.textContent = monthNames[month];
+      yearEl.textContent = year;
+      
+      daysEl.innerHTML = '';
+      
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      const totalCells = 49;
+      for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement("div");
 
-    monthEl.textContent = monthNames[month];
-    yearEl.textContent = year;
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const totalCells = 49; // 7 rows x 7 columns: 1 row weekdays + 6 rows days
-    for (let i = 0; i < totalCells; i++) {
-      const cell = document.createElement("div");
-
-      if (i < 7) {
-        // Weekdays row
-        cell.textContent = weekdays[i];
-        cell.classList.add("weekday");
-      } else {
-        // Days of the month
-        const dayNumber = i - 7 - firstDay + 1;
-        if (dayNumber > 0 && dayNumber <= daysInMonth) {
-          cell.textContent = dayNumber;
-          if (dayNumber === today) {
-            cell.classList.add("today");
+        if (i < 7) {
+          cell.textContent = weekdays[i];
+          cell.classList.add("weekday");
+        } else {
+          const dayNumber = i - 7 - firstDay + 1;
+          if (dayNumber > 0 && dayNumber <= daysInMonth) {
+            cell.textContent = dayNumber;
+            
+            if (year === today.getFullYear() && 
+                month === today.getMonth() && 
+                dayNumber === today.getDate()) {
+              cell.classList.add("today");
+            }
           }
         }
-      }
 
-      daysEl.appendChild(cell);
+        daysEl.appendChild(cell);
+      }
     }
+
+    updateCalendar(currentDate);
+    
+    prevMonthBtn.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      updateCalendar(currentDate);
+    });
+    
+    nextMonthBtn.addEventListener('click', () => {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      updateCalendar(currentDate);
+    });
   </script>
 </body>
 </html>
