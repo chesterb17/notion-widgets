@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <title>Mini Calendar</title>
+
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap"
     rel="stylesheet"
   />
+
   <style>
     body {
       margin: 0;
@@ -20,23 +22,31 @@
     }
 
     .calendar {
-      width: 260px;
-      height: 260px;
+      width: 250px;
+      height: 250px;  /* fixed square size */
       background: #2f3437;
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 16px;
       box-sizing: border-box;
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    /* Content wrapper for header + divider + grid */
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: 100%;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .divider {
-    height: 1.5px;
-    background: rgba(255, 255, 255, 0.15);
-    margin: 10px 0 12px 0;
+      margin-bottom: 6px;
+      flex-shrink: 0; /* don't let header shrink */
     }
 
     .month {
@@ -45,50 +55,73 @@
     }
 
     .year {
-      font-size: 10px;
+      font-size: 12px;
       opacity: 0.7;
     }
 
-    .weekdays,
+    /* Divider sits directly above grid */
+    .divider {
+      height: 0.75px;
+      background: rgba(255, 255, 255, 0.1);
+      width: 100%;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Days grid (weekdays + days of month) */
     .days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      text-align: center;
+      grid-template-rows: repeat(7, 1fr); /* 1 row weekdays + 6 rows days */
+      gap: 4px;
+      width: 100%;
+
+      /* calculate height to fit remaining space */
+      height: calc(100% - 40px); /* 40px ≈ header + divider + margins */
     }
 
-    .weekdays div {
-      font-size: 12px;
-      opacity: 0.6;
-      padding-bottom: 4px;
-    }
-
+    /* Day cells */
     .days div {
-      font-size: 14px;
-      padding: 6px 0;
-      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1 / 1;   /* ensures perfect squares */
+      font-size: 16px;
+      font-weight: 400;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-sizing: border-box;
     }
 
+    /* Weekday cells */
+    .weekday {
+      font-weight: 600;
+      background: transparent;
+      border: none !important;
+    }
+
+    /* Highlight today */
     .today {
       background: #ffffff;
       color: #2f3437;
       font-weight: 600;
+      border: 1px solid #ffffff;
     }
   </style>
 </head>
+
 <body>
   <div class="calendar">
-    <div class="header">
-      <div class="month" id="month"></div>
-      <div class="year" id="year"></div>
+    <div class="content">
+      <div class="header">
+        <div class="month" id="month"></div>
+        <div class="year" id="year"></div>
+      </div>
+
+      <div class="divider"></div> <!-- divider sits directly above grid -->
+
+      <div class="days" id="days"></div>
     </div>
-
-    <div class="divider"></div>
-
-    <div class="weekdays">
-      <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
-    </div>
-
-    <div class="days" id="days"></div>
   </div>
 
   <script>
@@ -102,6 +135,8 @@
       "July","August","September","October","November","December"
     ];
 
+    const weekdays = ["S","M","T","W","T","F","S"];
+
     const year = now.getFullYear();
     const month = now.getMonth();
     const today = now.getDate();
@@ -112,21 +147,26 @@
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // Empty cells before month starts
-    for (let i = 0; i < firstDay; i++) {
-      daysEl.appendChild(document.createElement("div"));
-    }
+    const totalCells = 49; // 7 rows x 7 columns: 1 row weekdays + 6 rows days
+    for (let i = 0; i < totalCells; i++) {
+      const cell = document.createElement("div");
 
-    // Day numbers
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayEl = document.createElement("div");
-      dayEl.textContent = day;
-
-      if (day === today) {
-        dayEl.classList.add("today");
+      if (i < 7) {
+        // Weekdays row
+        cell.textContent = weekdays[i];
+        cell.classList.add("weekday");
+      } else {
+        // Days of the month
+        const dayNumber = i - 7 - firstDay + 1;
+        if (dayNumber > 0 && dayNumber <= daysInMonth) {
+          cell.textContent = dayNumber;
+          if (dayNumber === today) {
+            cell.classList.add("today");
+          }
+        }
       }
 
-      daysEl.appendChild(dayEl);
+      daysEl.appendChild(cell);
     }
   </script>
 </body>
