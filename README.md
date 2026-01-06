@@ -32,5 +32,8 @@ Any changes to the widget can be made by editing the source code located in the 
 
 **Divider Color:** line 86
 
+**Grid Color:** line 110
 
-To change background color, change rgb color in line 27. To change text color, change rgb color in line 21. To change grid/divider color, change rgb color in line 110 and 86 respectivly. To change 
+**Today Background Color & Border:** line 124 & line 127 
+
+**Today Number Color:** line 125
