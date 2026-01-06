@@ -16,9 +16,11 @@ To embed widgets into Notion use the follwing links:
 
 **Mini Calendar:** https://chesterb17.github.io/notion-widgets/calendar/index.html/
 
+**Semester Counter:** 
+
 ## Widgets
 
-Currently, there is a flip-clock and mini calendar widget available.
+Currently, there is a flip-clock, a mini calendar, and a semester counter widget available.
 
 ### Flip-Clock
 
@@ -43,3 +45,9 @@ Any changes to the widget can be made by editing the source code located in the 
 **Today Background Color & Border:** line 124 & line 127 
 
 **Today Number Color:** line 125
+
+### Semster Counter
+
+Any changes to the widget can be made by editing the source code located in the file **counter/index.html**. To make color changes, navigate to the line listed below and change the color as desired.
+
+**Background Color:** line 
