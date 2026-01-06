@@ -10,11 +10,17 @@ python3 -m http.server 8000
 
 and follow to the forwarded port. This should open a webpage where you can then navigate to the desired widget. You can also access the webpage through the *PORTS* tab once the command has been run in the terminal.
 
+To embed widgets into Notion use the follwing links:
+
+**Flip-Clock:** https://chesterb17.github.io/notion-widgets/clock/index.html/
+
+**Mini Calendar:** https://chesterb17.github.io/notion-widgets/calendar/index.html/
+
 ## Widgets
 
 Currently, there is a flip-clock and mini calendar widget available.
 
-### Clock
+### Flip-Clock
 
 Any changes to the widget layout and style can be made by editing the source code located in the file **clock/index.html**. To make color changes, navigate to the line listed below and change the color as desired.
 
@@ -22,7 +28,7 @@ Any changes to the widget layout and style can be made by editing the source cod
 
 **Text Color:** line 37
 
-### Calendar
+### Mini-Calendar
 
 Any changes to the widget can be made by editing the source code located in the file **calendar/index.html**. To make color changes, navigate to the line listed below and change the color as desired.
 
