@@ -16,7 +16,7 @@ To embed widgets into Notion use the follwing links:
 
 **Mini Calendar:** https://chesterb17.github.io/notion-widgets/calendar/index.html/
 
-**Semester Counter:** 
+**Semester Counter:** https://chesterb17.github.io/notion-widgets/counter/index.html/
 
 ## Widgets
 
@@ -50,4 +50,14 @@ Any changes to the widget can be made by editing the source code located in the 
 
 Any changes to the widget can be made by editing the source code located in the file **counter/index.html**. To make color changes, navigate to the line listed below and change the color as desired.
 
-**Background Color:** line 
+**Background Color:** line 29
+
+**Text Color:** line 19
+
+**Button Background Color:** line 55
+
+**Button Text Color:** line 23
+
+**Button Border Color:** line 22
+
+**Button Hover Color:** line 61
