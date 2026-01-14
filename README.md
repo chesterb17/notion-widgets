@@ -4,6 +4,8 @@ Collection of custom-made widgets for Notion.
 
 ## Instructions
 
+To customize widget, please clone or fork the repository.
+
 To preview widget, please paste the following into the terminal:
 
 python3 -m http.server 8000
